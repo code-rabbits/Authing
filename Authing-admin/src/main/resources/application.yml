@@ -3,7 +3,7 @@ server:
 spring:
   datasource:   # 数据库
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/icpc-security?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/authing?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
@@ -14,19 +14,32 @@ spring:
   redis:
     host: localhost
     port: 6379
+    password:
   servlet:
     multipart:   # 文件上传
       max-file-size: 2MB
       max-request-size: 20MB
+
 # mybatis-plus
 mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+
 # jwt
 jwt:
-  header: token   #jwt的请求头
-  secret: eyJleHAiOjE1NDMyMDUyODUsInN1YiI6ImFkbWluIiwiY3Jl   #jwt的加密字符串
-  expiration: 3600000   #jwt token有效时间（毫秒）
+  header: Authorization   #jwt的请求头
+  secret: abcdefghijklmnopqrstuvwxyz   #jwt的加密字符串
+  expireTime: 3600000   #令牌有效期（默认30分钟）
 
+
+#阿里云OSS配置
+aliyun:
+  oss:
+    file:
+      # 控制台 - oss - 点击对应桶 - 概览 - 地域节点
+      endpoint: oss-cn-hangzhou.aliyuncs.com
+      keyid: LTAI5tJL6rBvkrp8GggS8c34
+      keysecret: X1UW2qAol87mSdVVmfSVQO1ClHPOIy
+      bucketname: authplatform
