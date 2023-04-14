@@ -48,20 +48,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 生成token
 		String token = jwtTokenUtil.createToken(principal.getUsername());
 
-		// 登录成功,生成jwt，并放置到请求头中
-		// response.setHeader(jwtTokenUtil.getHeader(),token);
-
 		Map map=new HashMap();
-
 		map.put("token",token);
 
-		System.out.println("------------登录成功");
-
 		AjaxResult result = AjaxResult.ok(map);   //往前端返回token
-
-
-		// //将生成的authentication放入容器中，生成安全的上下文
-		// SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		outputStream.write(JSONUtil.toJsonStr(result).getBytes("UTF-8"));
 

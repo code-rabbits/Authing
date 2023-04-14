@@ -1,8 +1,6 @@
 package com.zut.admin.security.detail;
 
-import com.alibaba.fastjson.JSON;
 import com.zut.admin.entity.SysUser;
-import com.zut.admin.mapper.SysUserMapper;
 import com.zut.admin.service.SysUserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -24,8 +22,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	@Resource
 	private SysUserService sysUserService;
 
-	@Resource
-	private SysUserMapper sysUserMapper;
 
 	/**
 	 * 重写
@@ -50,13 +46,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		// String username=authParamsDto.getUsername();
 		//
 		// SysUser sysUser = sysUserService.selectSysUserByUsername(username);
+		// System.out.println("----"+s+"---");
 
-
-		System.out.println("----"+s+"---");
-
+		// 查询用户
 		SysUser sysUser = sysUserService.selectSysUserByUsername(s);
-		// sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername,username));
-
 		if (sysUser==null){
 			throw new UsernameNotFoundException("用户名不存在");
 		}
@@ -64,10 +57,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		// 密码
 		String password = sysUser.getPassword();
 
-		// 密码置空
-		sysUser.setPassword(null);
-		// 将用户信息转JSON
-		String userJson= JSON.toJSONString(sysUser);
+		// // 密码置空
+		// sysUser.setPassword(null);
+		// // 将用户信息转JSON
+		// String userJson= JSON.toJSONString(sysUser);
 
 		//权限列表
 		List<GrantedAuthority> grantedAuthorityList = sysUserService.selectUserAuthorityList(sysUser.getUserId());

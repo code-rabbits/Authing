@@ -3,7 +3,6 @@ package com.zut.admin.security.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,22 +20,11 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil {
 
-    // // 令牌自定义标识
-    // @Value("${jwt.header}")
-    // private String header;
-    //
-    // // 令牌秘钥
-    // @Value("${jwt.secret}")
-    // private String secret;
-    //
-    // // 令牌有效期（默认30分钟）
-    // @Value("${jwt.expireTime}")
-    // private Long expireTime;
-
     @Resource
     private JwtProperties jwtProperties;
 
     private static final String LOGIN_USER_KEY = "login_user";
+    private static final String CLAIM_KEY_CREATED = "created";
 
 
     /**
@@ -71,27 +59,10 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    // /**
-    //  * 创建令牌
-    //  *
-    //  * @param userDetails 用户信息
-    //  * @return 令牌
-    //  */
-    // public String createToken(UserDetails userDetails)
-    // {
-    //
-    //     Map<String, Object> claims = new HashMap<>();
-    //
-    //     claims.put(LOGIN_USER_KEY, userDetails.getUsername());
-    //
-    //     return createToken(claims);
-    // }
-
-
     /**
      * 创建令牌
      *
-     * @param userDetails 用户信息
+     * @param username 用户信息
      * @return 令牌
      */
     public String createToken(String username)
@@ -99,7 +70,8 @@ public class JwtTokenUtil {
 
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put(LOGIN_USER_KEY, username);
+        claims.put("sub", username);
+        claims.put(CLAIM_KEY_CREATED, new Date());
 
         return createToken(claims);
     }
@@ -113,12 +85,8 @@ public class JwtTokenUtil {
      * @return 是否有效
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
-
-
-        // String username = getUsernameFromToken(token);
-        // return (username.equals(userDetails.getUsername()));
-
-        return true;
+        String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 
@@ -141,14 +109,39 @@ public class JwtTokenUtil {
     }
 
 
+    /**
+     * 判断令牌是否过期
+     *
+     * @param token 令牌
+     * @return 是否过期
+     */
+    public Boolean isTokenExpired(String token) {
+        try {
+            Claims claims = getClaimsFromToken(token);
+            Date expiration = claims.getExpiration();
+            return expiration.before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
-
-
-
-
-
-
-
+    /**
+     * 刷新令牌
+     *
+     * @param token 原令牌
+     * @return 新令牌
+     */
+    public String refreshToken(String token) {
+        String refreshedToken;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            claims.put(CLAIM_KEY_CREATED, new Date());
+            refreshedToken = createToken(claims);
+        } catch (Exception e) {
+            refreshedToken = null;
+        }
+        return refreshedToken;
+    }
 
 }

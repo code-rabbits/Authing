@@ -21,10 +21,6 @@ import java.io.IOException;
 @Component
 public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
 
-
-	@Resource
-	private JwtTokenUtil jwtTokenUtil;
-
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -34,10 +30,6 @@ public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
 
 		response.setContentType("application/json;charset=UTF-8");
 		ServletOutputStream outputStream = response.getOutputStream();
-
-		// 将响应头置空
-		// response.setHeader(jwtTokenUtil.getHeader(),"");
-
 
 		AjaxResult result = AjaxResult.ok("");
 
