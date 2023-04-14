@@ -11,6 +11,23 @@
             SELECT DISTINCT rm.menu_id FROM `t_user_role` AS ur LEFT JOIN
                                             t_role_menu AS rm ON ur.role_id=rm.role_id WHERE ur.user_id=#{userId} and rm.client_code=#{clientCode})
     </select>
+
+    <!--
+        SQL:select DISTINCT t_menu.menu_id,t_menu.menu_name,t_menu.parent_id,t_menu.path,t_menu.perms,t_menu.component,t_menu.menu_type,t_menu.icon,t_menu.order_num from t_menu WHERE menu_id IN(
+            SELECT DISTINCT rm.menu_id FROM `t_user_role` AS ur LEFT JOIN t_role_menu AS rm ON ur.role_id=rm.role_id WHERE ur.user_id=1) and  t_menu.menu_type!="F" order by t_menu.order_num asc
+    -->
+    <select id="getMenuListByUserId" resultType="com.zut.admin.entity.Menu">
+        select
+            DISTINCT
+            t_menu.menu_id,t_menu.menu_name,t_menu.parent_id,t_menu.path,t_menu.perms,t_menu.component,t_menu.menu_type,t_menu.icon,t_menu.order_num
+        from
+            t_menu WHERE menu_id IN(
+            SELECT DISTINCT rm.menu_id FROM `t_user_role` AS ur LEFT JOIN
+                                            t_role_menu AS rm ON ur.role_id=rm.role_id WHERE ur.user_id=#{userId})
+                       and  t_menu.menu_type!=2
+        order by t_menu.order_num asc
+
+    </select>
 </mapper>
 
 
