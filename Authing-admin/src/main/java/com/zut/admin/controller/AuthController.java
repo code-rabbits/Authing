@@ -1,9 +1,13 @@
 package com.zut.admin.controller;
 
+import com.zut.admin.entity.SysUser;
+import com.zut.admin.service.AuthService;
+import com.zut.admin.service.SysUserService;
 import com.zut.common.result.AjaxResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +22,11 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
+    @Resource
+    private SysUserService sysUserService;
+
+    @Resource
+    private AuthService authService;
 
     /**
      * 获取当前登录用户的信息
@@ -30,10 +39,10 @@ public class AuthController {
         String username = principal.getName();
 
         // // 获取登录用户信息
-        // SysUser sysUser = sysUserService.selectSysUserByUsername(username);
-        //
+        SysUser sysUser = sysUserService.selectSysUserByUsername(username);
+
         // // 权限列表
-        // List<String> permissionList = authService.getUserInfo(sysUser.getId());
+        List<String> permissionList = authService.getUserInfo(sysUser.getUserId(),clientCode);
 
         // String [] permissionArray = permissionList.toArray(new String[permissionList.size()]);
 
@@ -42,8 +51,8 @@ public class AuthController {
         // map.put("name",sysUser.getNickname()); //用户昵称
         // map.put("avatar",sysUser.getAvatar()); //用户头像信息
 
-        map.put("roles",username);     //角色信息
-        map.put("name",clientCode); //用户昵称
+        // map.put("roles",username);     //角色信息
+        // map.put("name",clientCode); //用户昵称
 
 
         return  AjaxResult.ok(200,map);
