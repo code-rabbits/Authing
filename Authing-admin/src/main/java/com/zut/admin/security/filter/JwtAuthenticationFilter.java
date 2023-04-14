@@ -46,9 +46,13 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         // 获取token
         String token = request.getHeader(jwtProperties.getHeader());
 
+        // System.out.println("token:"+token);
+
         if (token != null && StringUtils.isNotEmpty(token)){
 
             String username = jwtTokenUtil.getUsernameFromToken(token);
+
+            // System.out.println("username:"+username);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

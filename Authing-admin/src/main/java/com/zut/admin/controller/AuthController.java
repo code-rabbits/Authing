@@ -51,7 +51,8 @@ public class AuthController {
         // map.put("name",sysUser.getNickname()); //用户昵称
         // map.put("avatar",sysUser.getAvatar()); //用户头像信息
 
-        // map.put("roles",username);     //角色信息
+        map.put("roles",permissionList);     //角色信息
+
         // map.put("name",clientCode); //用户昵称
 
 

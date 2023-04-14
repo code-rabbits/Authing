@@ -4,4 +4,10 @@
 
 
 
+    <select id="getRoleCodeList" resultType="java.lang.String">
+        SELECT role_code FROM t_role WHERE client_code=#{clientCode} and role_id IN(SELECT role_id FROM t_user_role WHERE user_id=#{userId})
+    </select>
+
+
+
 </mapper>

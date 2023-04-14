@@ -1,7 +1,7 @@
 package com.zut.admin.service;
 
-import com.zut.admin.entity.SysUser;
-import com.zut.admin.mapper.SysUserMapper;
+import com.zut.admin.mapper.MenuMapper;
+import com.zut.admin.mapper.RoleMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,52 +17,35 @@ import java.util.List;
 @Service
 public class AuthService {
 
+    @Resource
+    private RoleMapper roleMapper;
 
     @Resource
-    private SysUserMapper userMapper;
-
-    @Resource
-    private SysRoleMapper roleMapper;
-
-    @Resource
-    private SysMenuMapper menuMapper;
-
-
+    private MenuMapper menuMapper;
 
     /**
-     * 获取登录用户的详细信息
+     * 获取登录用户的权限编码
      *
      * @return UserVo
      */
     public List<String> getUserInfo(Long userId, String clientCode){
 
+        // 获取角色权限编码列表
+        List<String> codeList = roleMapper.getRoleCodeList(userId,clientCode);
+        // 获取菜单权限编码列表
+        List<String> permsList = menuMapper.selectPermsList(userId,clientCode);
 
-        // // 查询用户信息
-        // SysUser sysUser = userMapper.selectById(userId);
-        //
-        // // 获取角色权限编码列表
-        // List<String> codeList = roleMapper.getRoleCodeList(userId);
-        // // 获取菜单权限编码列表
-        // List<String> permsList = menuMapper.selectPermsList(userId);
-        //
-        // // 最终的权限列表
-        // List<String> permissionList=new ArrayList<>();
-        //
-        // for (String s:codeList){
-        //     permissionList.add(s);
-        // }
-        // for (String p:permsList ){
-        //     permissionList.add(p);
-        // }
-        //
-        // return permissionList;
+        // 最终的权限列表
+        List<String> permissionList=new ArrayList<>();
 
+        for (String s:codeList){
+            permissionList.add(s);
+        }
+        for (String p:permsList ){
+            permissionList.add(p);
+        }
 
-
-
-
-
-        return null;
+        return permissionList;
     }
 
 

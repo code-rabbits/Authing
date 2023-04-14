@@ -3,5 +3,14 @@
 <mapper namespace="com.zut.admin.mapper.MenuMapper">
 
 
-
+    <!--
+     SQL：   SELECT perms FROM t_menu WHERE  menu_id IN( SELECT DISTINCT rm.menu_id FROM t_user_role AS ur LEFT JOIN t_role_menu AS rm ON ur.role_id=rm.role_id WHERE ur.user_id=1 AND rm.client_code="sys-client01")
+    -->
+    <select id="selectPermsList" resultType="java.lang.String">
+        SELECT perms FROM t_menu WHERE menu_id IN(
+            SELECT DISTINCT rm.menu_id FROM `t_user_role` AS ur LEFT JOIN
+                                            t_role_menu AS rm ON ur.role_id=rm.role_id WHERE ur.user_id=#{userId} and rm.client_code=#{clientCode})
+    </select>
 </mapper>
+
+
