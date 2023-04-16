@@ -3,6 +3,7 @@ package com.zut.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zut.admin.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -28,4 +29,24 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     String getUserAuthorityList(Long userId);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 更新用户头像
+     * @param userName
+     * @param avatar
+     * @return
+     */
+    int updateUserAvatar(@Param("userName") String userName, @Param("avatar") String avatar);
 }

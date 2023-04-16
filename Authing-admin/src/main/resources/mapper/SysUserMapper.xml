@@ -3,6 +3,7 @@
 <mapper namespace="com.zut.admin.mapper.SysUserMapper">
 
 
+
     <select id="selectSysUserByUsername" resultType="com.zut.admin.entity.SysUser">
         select * from t_sys_user where username=#{username} and status=0
     </select>
@@ -10,6 +11,15 @@
     <select id="getUserAuthorityList" resultType="java.lang.String">
         select * from t_sys_user
     </select>
+
+
+
+
+
+    <!--更新用户头像-->
+    <update id="updateUserAvatar">
+        update t_sys_user set avatar = #{avatar} where username = #{userName}
+    </update>
 
 
 </mapper>

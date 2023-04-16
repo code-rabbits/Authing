@@ -6,9 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zut.admin.entity.SysUser;
+import com.zut.admin.exception.GlobalExceptionHandler;
 import com.zut.admin.mapper.SysUserMapper;
+import com.zut.admin.security.dto.UserUpdateProfileDTO;
+import com.zut.admin.security.dto.UserUpdatePwdDTO;
 import com.zut.admin.service.SysUserService;
+import com.zut.admin.vo.UserProfileVO;
 import com.zut.common.page.DataTableResult;
+import com.zut.common.utils.BeanCopierUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -82,5 +87,58 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //
         return grantedAuthorityList;
     }
+
+
+
+    /**
+     * 个人中心详情
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserProfileVO getUserProfile(Long userId) {
+        SysUser sysUser = sysUserMapper.selectById(userId);
+
+        if (null == sysUser) {
+            // throw new GlobalExceptionHandler() BusinessException(UserResStatusEnum.USER_NOT_EXISTS);
+        }
+        return  BeanCopierUtil.copy(sysUser, UserProfileVO.class);
+    }
+
+    /**
+     * 修改个人信息
+     * @param userUpdateProfileDTO
+     */
+    @Override
+    public void updateProfile(UserUpdateProfileDTO userUpdateProfileDTO) {
+
+
+    }
+
+    /**
+     * 修改个人密码
+     * @param userUpdatePwdDTO
+     */
+    @Override
+    public void updatePwd(UserUpdatePwdDTO userUpdatePwdDTO) {
+
+
+
+    }
+
+    /**
+     * 修改用户头像
+     *
+     * @param userName 用户名
+     * @param avatar 头像地址
+     * @return 结果
+     */
+    @Override
+    public boolean updateUserAvatar(String userName, String avatar) {
+
+
+        return sysUserMapper.updateUserAvatar(userName, avatar) > 0;;
+    }
+
 
 }
