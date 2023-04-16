@@ -137,7 +137,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean updateUserAvatar(String userName, String avatar) {
 
 
-        return sysUserMapper.updateUserAvatar(userName, avatar) > 0;;
+        return sysUserMapper.updateUserAvatar(userName, avatar) > 0;
     }
 
 
