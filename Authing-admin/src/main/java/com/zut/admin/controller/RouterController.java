@@ -46,8 +46,6 @@ public class RouterController {
         //获取登录用户的权限(只需要获取目录和菜单权限即可，用于生成路由)
         List<Menu> menuList = routerService.getMenuListByUserId(user.getUserId());
 
-        System.out.println("AAA"+menuList+"bbb");
-
         // 将权限封装成路由的形式
         List<RouterVO> routerVOList = MakeMenuTree.makeRouter(menuList, GlobalConstants.ROOT_MENU_ID);
 

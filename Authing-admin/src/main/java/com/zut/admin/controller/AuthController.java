@@ -41,20 +41,24 @@ public class AuthController {
         // // 获取登录用户信息
         SysUser sysUser = sysUserService.selectSysUserByUsername(username);
 
+
+        System.out.println("clientCode:"+clientCode);
+
         // // 权限列表
         List<String> permissionList = authService.getUserInfo(sysUser.getUserId(),clientCode);
 
         // String [] permissionArray = permissionList.toArray(new String[permissionList.size()]);
 
         Map map=new HashMap();
-        // map.put("roles",permissionArray);     //角色信息
+
+
+        // map.put("roles","[admin]");    //角色信息
         // map.put("name",sysUser.getNickname()); //用户昵称
         // map.put("avatar",sysUser.getAvatar()); //用户头像信息
 
         map.put("roles",permissionList);     //角色信息
-
-        // map.put("name",clientCode); //用户昵称
-
+        map.put("name",username); //用户昵称
+        map.put("avatar",sysUser.getAvatar()); //用户头像信息
 
         return  AjaxResult.ok(200,map);
 
