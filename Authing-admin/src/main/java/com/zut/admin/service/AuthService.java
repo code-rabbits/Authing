@@ -32,6 +32,7 @@ public class AuthService {
 
         // 获取角色权限编码列表
         List<String> codeList = roleMapper.getRoleCodeList(userId,clientCode);
+
         // 获取菜单权限编码列表
         List<String> permsList = menuMapper.selectPermsList(userId,clientCode);
 
