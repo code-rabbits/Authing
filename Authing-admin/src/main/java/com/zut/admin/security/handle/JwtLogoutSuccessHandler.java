@@ -2,8 +2,10 @@ package com.zut.admin.security.handle;
 
 import cn.hutool.json.JSONUtil;
 import com.zut.admin.security.util.JwtTokenUtil;
+import com.zut.admin.security.util.RedisUtil;
 import com.zut.common.result.AjaxResult;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
@@ -21,8 +23,19 @@ import java.io.IOException;
 @Component
 public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
 
+	@Resource
+	private RedisUtil redisUtil;
+
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
+		// // 获取登录用户信息
+		// UserDetails principal = (UserDetails)authentication.getPrincipal();
+		//
+		// System.out.println("退出登录："+principal.getUsername());
+		//
+		// // 删除redis中的token
+		// redisUtil.del(principal.getUsername());
 
 		if (authentication != null) {
 			new SecurityContextLogoutHandler().logout(request, response, authentication);

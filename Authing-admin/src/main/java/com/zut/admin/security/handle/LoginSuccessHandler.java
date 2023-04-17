@@ -3,7 +3,9 @@ package com.zut.admin.security.handle;
 
 import cn.hutool.json.JSONUtil;
 import com.zut.admin.security.util.JwtTokenUtil;
+import com.zut.admin.security.util.RedisUtil;
 import com.zut.common.result.AjaxResult;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +30,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Resource
 	private JwtTokenUtil jwtTokenUtil;
 
+	@Resource
+	private RedisUtil redisUtil;
+
 	/**
 	 * 登录成功
 	 * @param request
@@ -47,6 +52,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// 生成token
 		String token = jwtTokenUtil.createToken(principal.getUsername());
+		// redis中的token
+		String redisToken = redisUtil.get(principal.getUsername());
+
+		if (redisToken!=null){
+			token=redisToken;
+		}else {
+			// 将token保存到redis中
+			redisUtil.set(principal.getUsername(),token);
+		}
 
 		Map map=new HashMap();
 		map.put("token",token);
