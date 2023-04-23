@@ -52,15 +52,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// 生成token
 		String token = jwtTokenUtil.createToken(principal.getUsername());
-		// redis中的token
-		String redisToken = redisUtil.get(principal.getUsername());
 
-		if (redisToken!=null){
-			token=redisToken;
-		}else {
-			// 将token保存到redis中
-			redisUtil.set(principal.getUsername(),token);
-		}
+		// // redis中的token
+		// String redisToken = redisUtil.get(principal.getUsername());
+		//
+		// if (redisToken!=null){
+		// 	token=redisToken;
+		// }else {
+		// 	// 将token保存到redis中
+		// 	redisUtil.set(principal.getUsername(),token);
+		// }
 
 		Map map=new HashMap();
 		map.put("token",token);
